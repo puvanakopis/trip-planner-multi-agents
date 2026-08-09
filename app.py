@@ -20,18 +20,42 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-# Custom CSS for modern light theme with white and green palette
+# Custom CSS for modern light theme with white and green palette (Inlined Streamlit Theme)
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&display=swap');
     
-    html, body, [class*="css"] {
+    /* Streamlit Base Light Theme & Color System Variables */
+    :root {
+        --primary-color: #059669 !important;
+        --background-color: #ffffff !important;
+        --secondary-background-color: #f0fdf4 !important;
+        --text-color: #0f172a !important;
+        --font: 'Outfit', sans-serif !important;
+    }
+
+    html, body, .stApp {
         font-family: 'Outfit', sans-serif !important;
         color: #0f172a !important;
+        color-scheme: light !important;
+    }
+
+    /* Preserve Material Icons font family for Streamlit icons & sidebar collapse toggle */
+    [data-testid="stIconMaterial"],
+    [data-testid="stSidebarCollapseButton"],
+    [data-testid="stSidebarCollapseButton"] *,
+    [data-testid="stSidebarHeader"] *,
+    button[data-testid="stSidebarCollapseButton"] span,
+    button[data-testid="stSidebarCollapseButton"] i,
+    span[data-testid="stHeaderNav"] *,
+    .stIconMaterial,
+    [class*="Material"] {
+        font-family: "Material Symbols Rounded", "Material Symbols Outlined", "Material Icons" !important;
     }
     
     .stApp {
         background: linear-gradient(135deg, #f8fafc 0%, #f0fdf4 50%, #ecfdf5 100%) !important;
+        background-color: #ffffff !important;
         color: #0f172a !important;
     }
 
@@ -229,11 +253,14 @@ st.markdown("""
     }
     
     /* Stepper (+/-) buttons in st.number_input (Duration, Travelers, Total Budget) */
+    /* Stepper (+/-) buttons in st.number_input (Duration, Travelers, Total Budget) */
     .stNumberInput button,
     div[data-testid="stNumberInput"] button,
-    [data-testid="stNumberInput"] button {
-        background: transparent !important;
-        background-color: transparent !important;
+    [data-testid="stNumberInput"] button,
+    button[data-testid="stNumberInputStepDownButton"],
+    button[data-testid="stNumberInputStepUpButton"] {
+        background: #ffffff !important;
+        background-color: #ffffff !important;
         border: none !important;
         border-left: 1.5px solid #d1fae5 !important;
         color: #059669 !important;
@@ -247,7 +274,9 @@ st.markdown("""
     
     .stNumberInput button:hover,
     div[data-testid="stNumberInput"] button:hover,
-    [data-testid="stNumberInput"] button:hover {
+    [data-testid="stNumberInput"] button:hover,
+    button[data-testid="stNumberInputStepDownButton"]:hover,
+    button[data-testid="stNumberInputStepUpButton"]:hover {
         background: #f0fdf4 !important;
         background-color: #f0fdf4 !important;
         color: #047857 !important;
@@ -288,6 +317,19 @@ st.markdown("""
         min-height: 42px !important;
     }
 
+    /* Target all inner wrapper elements and input inside stNumberInput to be solid white background */
+    div[data-testid="stNumberInput"] div,
+    div[data-testid="stNumberInput"] input,
+    div[data-testid="stNumberInputContainer"] div,
+    div[data-testid="stNumberInputContainer"] input,
+    div[data-baseweb="input"] div,
+    div[data-baseweb="base-input"] div {
+        background-color: #ffffff !important;
+        background: #ffffff !important;
+        color: #0f172a !important;
+        border: none !important;
+    }
+
     div[data-testid="stNumberInput"] > div:not([data-testid="stWidgetLabel"]):hover,
     div[data-testid="stNumberInputContainer"]:hover {
         border-color: #059669 !important;
@@ -301,12 +343,11 @@ st.markdown("""
     }
 
     /* Strip internal sub-borders inside number input box */
-    div[data-testid="stNumberInput"] div[data-baseweb="input"] div,
     div[data-testid="stNumberInput"] div[data-testid="stNumberInputStepControls"],
     .stNumberInputStepControls,
     [data-testid="stNumberInputStepControls"] {
         border: none !important;
-        background: transparent !important;
+        background: #ffffff !important;
         box-shadow: none !important;
     }
 
@@ -667,6 +708,20 @@ st.markdown("""
     ::-webkit-scrollbar-thumb:hover {
         background: #059669;
     }
+
+    /* Progress Bar & Spinners */
+    div[data-testid="stProgressBar"] > div > div {
+        background-color: #059669 !important;
+    }
+
+    div[data-testid="stSpinner"] > div {
+        border-top-color: #059669 !important;
+    }
+
+    ::selection {
+        background-color: #a7f3d0 !important;
+        color: #065f46 !important;
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -921,8 +976,9 @@ if generate_clicked or "plan_data" in st.session_state:
                         tooltip=["Category", alt.Tooltip("Cost (LKR):Q", format=",")]
                     )
                     .properties(height=260)
-                    .configure_view(strokeWidth=0)
-                    .configure_axis(gridColor="#e2e8f0", domainColor="#cbd5e1")
+                    .configure_view(strokeWidth=0, fill="#ffffff")
+                    .configure_axis(gridColor="#e2e8f0", domainColor="#cbd5e1", labelColor="#0f172a", titleColor="#065f46")
+                    .configure(background="#ffffff")
                 )
                 st.altair_chart(chart, width="stretch")
 
