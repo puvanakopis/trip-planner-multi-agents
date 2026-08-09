@@ -212,8 +212,7 @@ st.markdown("""
     button[data-testid="stBaseButton-secondary"],
     .stButton > button,
     .stButton > button[kind="primary"],
-    div[data-testid="stFormSubmitButton"] > button,
-    div[data-baseweb="button"] {
+    div[data-testid="stFormSubmitButton"] > button {
         background: linear-gradient(135deg, #059669 0%, #047857 100%) !important;
         background-color: #059669 !important;
         color: #ffffff !important;
@@ -230,8 +229,7 @@ st.markdown("""
     button[data-testid="stBaseButton-secondary"]:hover,
     .stButton > button:hover,
     .stButton > button[kind="primary"]:hover,
-    div[data-testid="stFormSubmitButton"] > button:hover,
-    div[data-baseweb="button"]:hover {
+    div[data-testid="stFormSubmitButton"] > button:hover {
         background: linear-gradient(135deg, #047857 0%, #065f46 100%) !important;
         background-color: #047857 !important;
         color: #ffffff !important;
@@ -481,7 +479,9 @@ st.markdown("""
     span[data-baseweb="tag"],
     div[data-baseweb="tag"],
     [data-testid="stMultiSelect"] span[data-baseweb="tag"],
-    [data-testid="stMultiSelect"] div[data-baseweb="tag"] {
+    [data-testid="stMultiSelect"] div[data-baseweb="tag"],
+    [data-testid="stMultiSelectTag"],
+    [data-baseweb="tag"] {
         background-color: #f0fdf4 !important;
         background: #f0fdf4 !important;
         color: #065f46 !important;
@@ -493,19 +493,33 @@ st.markdown("""
     }
 
     /* Text inside multiselect tags */
-    span[data-baseweb="tag"] span,
-    div[data-baseweb="tag"] span,
+    span[data-baseweb="tag"] *,
+    div[data-baseweb="tag"] *,
+    [data-testid="stMultiSelectTag"] *,
     [data-testid="stMultiSelect"] span[data-baseweb="tag"] span {
         color: #065f46 !important;
         font-family: 'Outfit', sans-serif !important;
         font-size: 0.88rem !important;
     }
 
+    /* Tag delete button inside tag */
+    span[data-baseweb="tag"] div[data-baseweb="button"],
+    div[data-baseweb="tag"] div[data-baseweb="button"],
+    span[data-baseweb="tag"] [role="button"],
+    div[data-baseweb="tag"] [role="button"] {
+        background: transparent !important;
+        background-color: transparent !important;
+        border: none !important;
+        box-shadow: none !important;
+        color: #065f46 !important;
+        padding: 0 2px !important;
+    }
+
     /* Close 'x' icon on multiselect tags */
     span[data-baseweb="tag"] svg,
     div[data-baseweb="tag"] svg,
     span[data-baseweb="tag"] [data-baseweb="icon"],
-    span[data-baseweb="tag"] [role="button"],
+    span[data-baseweb="tag"] [role="button"] svg,
     [data-testid="stMultiSelect"] span[data-baseweb="tag"] svg path {
         fill: #065f46 !important;
         color: #065f46 !important;
@@ -514,7 +528,8 @@ st.markdown("""
 
     /* Hover state for multiselect close 'x' icon */
     span[data-baseweb="tag"] span[role="button"]:hover,
-    div[data-baseweb="tag"] span[role="button"]:hover {
+    div[data-baseweb="tag"] span[role="button"]:hover,
+    span[data-baseweb="tag"] [role="button"]:hover {
         background-color: #dcfce7 !important;
         border-radius: 50% !important;
     }
@@ -595,7 +610,9 @@ st.markdown("""
     }
     
     /* TAB CONTAINER & BUTTONS - LIGHT THEME OVERRIDES */
-    div[data-baseweb="tab-list"] {
+    div[data-baseweb="tab-list"],
+    div[data-testid="stTabs"] > div:first-child,
+    [data-testid="stTabHeader"] {
         background-color: #ffffff !important;
         border-bottom: 2px solid #a7f3d0 !important;
         border-radius: 12px 12px 0 0 !important;
@@ -603,8 +620,18 @@ st.markdown("""
         gap: 6px !important;
     }
 
-    button[data-baseweb="tab"] {
-        color: #334155 !important;
+    /* Tab active highlight line */
+    div[data-baseweb="tab-highlight"],
+    div[data-testid="stTabHighlight"] {
+        background-color: #059669 !important;
+    }
+
+    /* Tabs (Active and Inactive) */
+    button[data-baseweb="tab"],
+    button[data-testid="stTab"],
+    button[role="tab"],
+    [data-testid="stTab"] {
+        color: #1e293b !important;
         font-weight: 600 !important;
         font-size: 0.95rem !important;
         background-color: transparent !important;
@@ -613,28 +640,48 @@ st.markdown("""
         opacity: 1 !important;
     }
 
-    button[data-baseweb="tab"] p,
-    button[data-baseweb="tab"] span,
-    button[data-baseweb="tab"] div {
-        color: #334155 !important;
+    /* Target inner text of all tabs to be crisp dark slate text */
+    button[data-baseweb="tab"] *,
+    button[data-testid="stTab"] *,
+    button[role="tab"] *,
+    [data-testid="stTab"] p,
+    [data-testid="stTab"] span,
+    [data-testid="stTab"] div {
+        color: #1e293b !important;
         opacity: 1 !important;
     }
 
-    button[data-baseweb="tab"]:hover {
+    /* Hover State for Tabs */
+    button[data-baseweb="tab"]:hover,
+    button[data-testid="stTab"]:hover,
+    button[role="tab"]:hover {
         background-color: #f0fdf4 !important;
         color: #065f46 !important;
     }
 
-    button[data-baseweb="tab"][aria-selected="true"] {
+    button[data-baseweb="tab"]:hover *,
+    button[data-testid="stTab"]:hover *,
+    button[role="tab"]:hover * {
+        color: #065f46 !important;
+    }
+
+    /* Selected / Active Tab */
+    button[data-baseweb="tab"][aria-selected="true"],
+    button[data-testid="stTab"][aria-selected="true"],
+    button[role="tab"][aria-selected="true"],
+    [aria-selected="true"][data-testid="stTab"] {
         color: #059669 !important;
         background-color: #f0fdf4 !important;
         font-weight: 700 !important;
     }
 
-    button[data-baseweb="tab"][aria-selected="true"] p,
-    button[data-baseweb="tab"][aria-selected="true"] span,
-    button[data-baseweb="tab"][aria-selected="true"] div {
+    button[data-baseweb="tab"][aria-selected="true"] *,
+    button[data-testid="stTab"][aria-selected="true"] *,
+    button[role="tab"][aria-selected="true"] *,
+    [aria-selected="true"][data-testid="stTab"] p,
+    [aria-selected="true"][data-testid="stTab"] span {
         color: #059669 !important;
+        font-weight: 700 !important;
     }
 
     /* Tab content panel bottom padding */
